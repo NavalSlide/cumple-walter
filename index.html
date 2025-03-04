@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            overflow: hidden;
+            color: white;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s infinite;
+            color: #00b4ff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .claim-btn {
+            background-color: #00b4ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .claim-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            background-color: #0099cc;
+        }
+        
+        .claim-btn:active {
+            transform: translateY(0);
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: floatUp 10s linear forwards;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                bottom: -50px;
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 110vh;
+                opacity: 0;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .cake {
+            font-size: 3rem;
+            margin-top: 2rem;
+            animation: rotate 3s infinite alternate;
+            color: #00b4ff;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(-5deg);
+            }
+            100% {
+                transform: rotate(5deg);
+            }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            z-index: 10;
+        }
+        
+        /* Estilos para la ventana modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a1a, #000000);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            max-width: 80%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            animation: modalPop 0.5s forwards;
+            border: 2px solid #00b4ff;
+        }
+        
+        @keyframes modalPop {
+            0% {
+                transform: scale(0.9);
+            }
+            70% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .modal-content h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .yes-btn {
+            background-color: #00b4ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .yes-btn:hover {
+            background-color: #0099cc;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .yes-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Estilos para la imagen que aparece */
+        .special-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 80%;
+            max-height: 80%;
+            z-index: 1001;
+            animation: fadeOut 3s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="index.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Sonido al hacer clic en botones -->
+    <audio id="clickSound">
+        <source src="click.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Imagen especial que aparecerá -->
+    <img id="specialImage" class="special-image" src="imagen-especial.jpg" alt="Imagen especial" style="display: none;">
+
+    <!-- Ventana modal inicial -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal-content">
+            <h2>¿Listo para reclamar tu regalo?</h2>
+            <button class="yes-btn" id="yesButton">¡Sí!</button>
+        </div>
+    </div>
+    
+    <h1>¡Feliz Cumple Walter 🤑!</h1>
+    
+    <a href="reclamar.html" class="claim-btn" id="claimButton">
+        Reclamar PS5
+    </a>
+    
+    <div class="cake">🎂</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+    
+    <script>
+        // Función para reproducir sonido al hacer clic
+        function playClickSound() {
+            const clickSound = document.getElementById('clickSound');
+            clickSound.play().catch(error => console.log("Error al reproducir sonido:", error));
+        }
+
+        // Función para lanzar confeti desde distintas posiciones
+        function launchConfetti(origin) {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 70,
+                    origin: origin
+                });
+            } else {
+                createCustomConfetti(origin);
+            }
+        }
+        
+        // Crear confeti personalizado desde un origen específico
+        function createCustomConfetti(origin = { x: 0.5, y: 0.5 }) {
+            const colors = ['#00b4ff', '#7C4DFF', '#00BCD4', '#FFEB3B', '#76FF03'];
+            
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Posición inicial basada en el origen
+                confetti.style.left = (origin.x * 100) + '%';
+                confetti.style.top = (origin.y * 100) + '%';
+                
+                // Tamaño aleatorio
+                const size = 5 + Math.random() * 10;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                // Rotación aleatoria
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                document.body.appendChild(confetti);
+                
+                // Dirección aleatoria
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 50 + Math.random() * 100;
+                const destX = origin.x * window.innerWidth + Math.cos(angle) * distance;
+                const destY = origin.y * window.innerHeight + Math.sin(angle) * distance;
+                
+                // Animar el confeti
+                const animation = confetti.animate([
+                    { 
+                        left: (origin.x * 100) + '%', 
+                        top: (origin.y * 100) + '%', 
+                        opacity: 1 
+                    },
+                    { 
+                        left: (destX / window.innerWidth * 100) + '%', 
+                        top: (destY / window.innerHeight * 100) + '%', 
+                        opacity: 0 
+                    }
+                ], {
+                    duration: 1000 + Math.random() * 2000,
+                    easing: 'cubic-bezier(0.1, 0.5, 0.9, 0.5)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+        
+        // Función para crear un globo
+        function createBalloon() {
+            const colors = ['#00b4ff', '#7C4DFF', '#00BCD4', '#FFEB3B', '#76FF03'];
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            
+            // Color aleatorio
+            const colorIndex = Math.floor(Math.random() * colors.length);
+            balloon.style.backgroundColor = colors[colorIndex];
+            
+            // Posición horizontal aleatoria
+            balloon.style.left = Math.random() * 90 + 5 + '%';
+            
+            // Tamaño aleatorio
+            const size = 30 + Math.random() * 20;
+            balloon.style.width = size + 'px';
+            balloon.style.height = size * 1.2 + 'px';
+            
+            // Velocidad aleatoria
+            const duration = 7 + Math.random() * 6;
+            balloon.style.animationDuration = duration + 's';
+            
+            // Añadir una pequeña cadena al globo
+            const string = document.createElement('div');
+            string.style.position = 'absolute';
+            string.style.width = '1px';
+            string.style.height = '20px';
+            string.style.backgroundColor = '#FFF';
+            string.style.bottom = '-20px';
+            string.style.left = '50%';
+            balloon.appendChild(string);
+            
+            document.body.appendChild(balloon);
+            
+            // Eliminar el globo después de que termine la animación
+            setTimeout(() => {
+                balloon.remove();
+            }, duration * 1000);
+        }
+        
+        // Función para iniciar la celebración
+        function startCelebration() {
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.play().catch(error => console.log("Error al reproducir:", error));
+            
+            setTimeout(() => {
+                try {
+                    // Lanzar confeti desde diferentes posiciones
+                    launchConfetti({ x: 0.5, y: 0 }); // Arriba centro
+                    
+                    setTimeout(() => {
+                        launchConfetti({ x: 0, y: 0 }); // Esquina superior izquierda
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        launchConfetti({ x: 1, y: 0 }); // Esquina superior derecha
+                    }, 600);
+                    
+                    setTimeout(() => {
+                        launchConfetti({ x: 0, y: 1 }); // Esquina inferior izquierda
+                    }, 900);
+                    
+                    setTimeout(() => {
+                        launchConfetti({ x: 1, y: 1 }); // Esquina inferior derecha
+                    }, 1200);
+                    
+                    // Continuar lanzando confeti periódicamente desde diferentes posiciones
+                    setInterval(() => {
+                        const positions = [
+                            { x: 0, y: 0 },    // Esquina superior izquierda
+                            { x: 1, y: 0 },    // Esquina superior derecha
+                            { x: 0, y: 1 },    // Esquina inferior izquierda
+                            { x: 1, y: 1 },    // Esquina inferior derecha
+                            { x: 0.5, y: 0 }   // Centro arriba
+                        ];
+                        const randomPosition = positions[Math.floor(Math.random() * positions.length)];
+                        launchConfetti(randomPosition);
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error("Error al ejecutar confeti:", error);
+                    // Fallback a confeti personalizado
+                    createCustomConfetti({ x: 0.5, y: 0.5 });
+                    setInterval(() => createCustomConfetti({ x: Math.random(), y: Math.random() * 0.3 }), 2000);
+                }
+                
+                // Crear globos periódicamente que suban desde abajo
+                setInterval(createBalloon, 800);
+                
+                // Crear varios globos iniciales
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(createBalloon, i * 300);
+                }
+                
+            }, 500);
+        }
+        
+        // Configurar evento para el botón "Sí" en el modal
+        document.getElementById('yesButton').addEventListener('click', function() {
+            // Reproducir sonido al hacer clic
+            playClickSound();
+
+            // Cerrar el modal
+            document.getElementById('welcomeModal').style.display = 'none';
+            
+            // Iniciar la celebración
+            startCelebration();
+            
+            // Lanzar confeti en el centro después de cerrar el modal
+            launchConfetti({ x: 0.5, y: 0.5 });
+
+            // Mostrar la imagen especial
+            const specialImage = document.getElementById('specialImage');
+            specialImage.style.display = 'block';
+
+            // Desvanecer la imagen después de 3 segundos
+            setTimeout(() => {
+                specialImage.style.display = 'none';
+            }, 3000);
+        });
+        
+        // Evento click para el botón de reclamar
+        document.getElementById('claimButton').addEventListener('click', function(e) {
+            // Reproducir sonido al hacer clic
+            playClickSound();
+
+            try {
+                // Explosión de confeti al hacer clic
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 200,
+                        spread: 180,
+                        origin: { y: 0.5, x: 0.5 }
+                    });
+                } else {
+                    createCustomConfetti({ x: 0.5, y: 0.5 });
+                }
+            } catch (error) {
+                console.error("Error al ejecutar confeti en click:", error);
+                createCustomConfetti({ x: 0.5, y: 0.5 });
+            }
+        });
+    </script>
+</body>
+</html>

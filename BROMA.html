@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclamar</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #121212;
+            color: white;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .gift-container {
+            width: 95%;
+            max-width: 800px; /* Aumentado para más espacio horizontal */
+            height: 70vh; /* Aumentado para más espacio vertical */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .gift-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            overflow: hidden; /* Para asegurar que el GIF no sobresalga */
+        }
+        
+        .gift-placeholder img {
+            width: 100%; /* Hace que la imagen ocupe todo el ancho disponible */
+            height: 100%; /* Hace que la imagen ocupe todo el alto disponible */
+            object-fit: contain; /* Mantiene la proporción de aspecto */
+            /* Para cubrir completamente el área: */
+            /* object-fit: cover; */
+        }
+        
+        .message {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 30px;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.8);
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                color: white;
+            }
+            100% {
+                transform: scale(1.1);
+                color: #FF4081;
+            }
+        }
+        
+        .emphasis {
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+            letter-spacing: 2px;
+            color: #FF4081;
+        }
+        
+        /* Añade un destello ocasional al texto */
+        @keyframes flash {
+            0%, 89% {
+                text-shadow: 0 0 10px rgba(255, 64, 129, 0.8);
+            }
+            90%, 100% {
+                text-shadow: 0 0 30px rgba(255, 64, 129, 1), 0 0 60px rgba(255, 64, 129, 1);
+            }
+        }
+        
+        .emphasis {
+            animation: pulse 1.5s infinite alternate, flash 4s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Elemento de audio para reproducir gato.mp3 en bucle -->
+    <audio id="audioGato" loop autoplay>
+        <source src="gato.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="gift-container">
+        <div class="gift-placeholder">
+            <img src="gato-sacando-el-dedo-del-medio.gif" alt="Bait GIF">
+        </div>
+    </div>
+    
+    <div class="message">
+        Era bait bro
+        <span class="emphasis">Quien te manda a </span>
+        <span class="emphasis">cumplir años en vacaciones 😑</span>
+        <span class="emphasis">Igual feliz cumple 😎</span>
+    </div>
+    
+    <script>
+        // Reproducir el audio al cargar la página
+        window.addEventListener('load', () => {
+            const audioGato = document.getElementById('audioGato');
+            
+            // Función para intentar reproducir el audio
+            const playAudio = () => {
+                audioGato.play().catch(error => {
+                    console.log("Error al reproducir audio:", error);
+                });
+            };
+            
+            // Intentar reproducir inmediatamente
+            playAudio();
+            
+            // Intentar de nuevo después de un segundo (por si acaso)
+            setTimeout(playAudio, 1000);
+            
+            // También intentar reproducir tras la interacción del usuario
+            document.body.addEventListener('click', function() {
+                playAudio();
+            }, { once: true });
+            
+            document.body.addEventListener('touchstart', function() {
+                playAudio();
+            }, { once: true });
+            
+            // Intenta mantener el audio reproduciéndose
+            audioGato.addEventListener('pause', function() {
+                audioGato.play().catch(e => {});
+            });
+            
+            // Opcional: ajustar el contenedor del GIF para que coincida con las dimensiones de la pantalla
+            const container = document.querySelector('.gift-container');
+            // Si prefieres un ajuste más preciso al tamaño real de la pantalla
+            container.style.width = window.innerWidth * 0.95 + 'px';
+            container.style.height = window.innerHeight * 0.7 + 'px';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclamar tu Regalo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00b4ff;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2; /* Asegura que el texto esté sobre las partículas */
+        }
+
+        .gift-image {
+            width: 500px;
+            height: auto;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+            z-index: 2; /* Asegura que la imagen del regalo esté sobre las partículas */
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .claim-btn {
+            background-color: #00b4ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 2; /* Asegura que el botón esté sobre las partículas */
+        }
+
+        .claim-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            background-color: #0099cc;
+        }
+
+        .claim-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Estilos para las partículas */
+        .particle {
+            position: absolute;
+            width: 30px; /* Tamaño de la imagen */
+            height: 30px;
+            background-image: url('particula.png'); /* Ruta de la imagen personalizada */
+            background-size: cover;
+            z-index: 1; /* Asegura que las partículas estén detrás del contenido principal */
+            animation: floatParticle 5s ease-in-out infinite;
+        }
+
+        @keyframes floatParticle {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(20px);
+            }
+            50% {
+                transform: translateY(20px) translateX(-20px);
+            }
+            75% {
+                transform: translateY(-20px) translateX(-20px);
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Música en loop -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="musica-fondo.mp3" type="audio/mp3">
+        Tu navegador no soporta la reproducción de audio.
+    </audio>
+
+    <h1>¡Reclama tu Regalo!</h1>
+
+    <!-- Imagen de regalo -->
+    <img src="regalo.png" alt="Regalo" class="gift-image">
+
+    <!-- Botón para reclamar -->
+    <a href="broma.html" class="claim-btn">
+        Reclamar
+    </a>
+
+    <!-- Script para crear partículas -->
+    <script>
+        // Función para crear partículas
+        function createParticles() {
+            const numParticles = 20; // Número de partículas
+            const particleContainer = document.body;
+
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                // Posición aleatoria
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+
+                // Tamaño aleatorio
+                const size = 20 + Math.random() * 20; // Entre 20px y 40px
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+
+                // Duración de la animación aleatoria
+                const duration = 5 + Math.random() * 5; // Entre 5s y 10s
+                particle.style.animationDuration = duration + 's';
+
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        // Crear partículas al cargar la página
+        window.onload = function() {
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.play().catch(error => console.log("Error al reproducir música:", error));
+
+            createParticles(); // Llama a la función para crear partículas
+        };
+    </script>
+
+</body>
+</html>
